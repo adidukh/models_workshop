@@ -3,25 +3,38 @@
 module Users
   class ProfilesController < ApplicationController
     def show
-      render :show, locals: { profile: profile }
+      render :show, locals: { user: user }
     end
 
     def edit
-      render :edit, locals: { profile: profile }
+      render :edit, locals: { user: user }
     end
 
     def update
-      if profile.update(profile_params)
-        redirect_to edit_profile_path
-      else
-        render :edit, locals: { profile: profile }
-      end
+      UpdateUserProfileCase
+        .call(params: profile_params, user: user)
+        .on_success(&method(:update_success))
+        .on_failure(:validation_failure, &method(:update_failed))
+        .on_failure(:exception, &method(:update_exception))
     end
 
     private
 
-    def profile
-      @profile ||= User.current.becomes(User::Profile)
+    def update_success(_user)
+      redirect_to edit_profile_path
+    end
+
+    def update_failed(user, _use_case)
+      render :edit, locals: { user: user }
+    end
+
+    def update_exception(exception)
+      flash.now[:error] = "Something went wrong... #{exception.message}"
+      render :edit, locals: { user: user }
+    end
+
+    def user
+      @user ||= User.current.becomes(User::ProfileForm)
     end
 
     def profile_params

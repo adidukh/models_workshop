@@ -9,7 +9,4 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false, allow_nil: false }
 
   store_accessor :geodata, :latitude, :longitude
-
-  geocoded_by :address
-  before_save :geocode
 end

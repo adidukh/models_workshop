@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  class Registration < ::User
+  class RegistrationForm < ::User
     include ApplicationShape
 
     validates :email, confirmation: { case_sensitive: false }

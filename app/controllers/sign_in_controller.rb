@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SessionsController < ApplicationController
+class SignInController < ApplicationController
   def new
     user = User.new
     render :new, locals: { user: user }
