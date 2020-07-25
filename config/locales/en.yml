@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  sessions:
+    new:
+      email: "Email"
+      password: "Password"
+      sign_me_in: "Sign me in"
